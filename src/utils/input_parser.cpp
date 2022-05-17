@@ -69,11 +69,11 @@ inline Amount get_amount(const rapidjson::Value& object,
     }
 
     for (rapidjson::SizeType i = 0; i < object[key].Size(); ++i) {
-      if (!object[key][i].IsUint()) {
+      if (!object[key][i].IsUint64()) {
         throw Exception(ERROR::INPUT,
                         "Invalid " + std::string(key) + " value.");
       }
-      amount[i] = object[key][i].GetUint();
+      amount[i] = object[key][i].GetUint64();
     }
   }
 
