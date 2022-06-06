@@ -1,0 +1,7 @@
+.idea
+.pytest_cache
+coverage.xml
+.coverage
+buildspec.yml
+Dockerfile
+.mypy_cache

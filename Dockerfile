@@ -12,7 +12,7 @@ RUN echo "Updating apt-get and installing dependencies..." && \
 	pkg-config
 FROM base_image as build_image
 COPY . .
-RUN git init && git submodule update --init --recursive && git status && ls -lah && && ls -lah lib exit 1
+RUN git init && git submodule update --init --recursive && git status && ls -lah && ls -lah lib exit 1
 # RUN USE_ROUTING=false make -C /vroom/src -j$(nproc)
 # FROM scratch
 # COPY --from=build_image /vroom/bin/vroom /usr/local/bin/vroom
