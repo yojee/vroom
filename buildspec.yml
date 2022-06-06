@@ -1,0 +1,23 @@
+version: 0.2
+env:
+  variables:
+    ECR_REPOSITORY_NAME: "yojee-solver"
+    IMAGE_NAME: "yojee-vroom"
+
+phases:
+ pre_build:
+  commands:
+    - REPOSITORY_URI=$(aws ecr describe-repositories --repository-names $ECR_REPOSITORY_NAME --output text --query repositories[0].repositoryUri)
+    - DOCKER_TAG=$REPOSITORY_URI:$IMAGE_NAME-$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
+    - LATEST_DOCKER_TAG=$REPOSITORY_URI:$IMAGE_NAME-latest
+    - $(aws ecr get-login --no-include-email)
+    - printf '[{"name":"%s","imageUri":"%s"}]' $IMAGE_NAME $DOCKER_TAG > imagedefinitions.json
+    - docker pull $LATEST_DOCKER_TAG || true
+ build:
+   commands:
+      - docker build --cache-from="$LATEST_DOCKER_TAG" --tag "$DOCKER_TAG" --tag "$LATEST_DOCKER_TAG" .
+      - docker push --all-tags $REPOSITORY_URI
+
+artifacts:
+  files:
+    - 'imagedefinitions.json'
