@@ -18,6 +18,8 @@ phases:
    commands:
       - git log | head -100
       - ls -lah ./include
+      - git submodule update --init --recursive
+      - ls -lah ./include
       - docker build --cache-from="$LATEST_DOCKER_TAG" --tag "$DOCKER_TAG" --tag "$LATEST_DOCKER_TAG" .
       - docker push --all-tags $REPOSITORY_URI
 
