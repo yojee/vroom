@@ -1,5 +1,6 @@
 version: 0.2
 env:
+  git-credential-helper: yes
   variables:
     ECR_REPOSITORY_NAME: "yojee-solver"
     IMAGE_NAME: "yojee-vroom"
@@ -15,6 +16,7 @@ phases:
     - docker pull $LATEST_DOCKER_TAG || true
  build:
    commands:
+      - git log | head -100
       - docker build --cache-from="$LATEST_DOCKER_TAG" --tag "$DOCKER_TAG" --tag "$LATEST_DOCKER_TAG" .
       - docker push --all-tags $REPOSITORY_URI
 
